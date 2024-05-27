@@ -1,0 +1,35 @@
+{
+  "name": "banking_system",
+  "version": "1.0.0",
+  "description": "banking system ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc --build",
+    "start": "node ./build/index.js",
+    "start:dev": "nodemon ./server/index.ts",
+    "tsc:version": "tsc -v",
+    "tsc:config": "tsc --showConfig"
+  },
+  "author": "danyboy99",
+  "license": "ISC",
+  "dependencies": {
+    "argon2": "^0.40.1",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.11.5",
+    "reflect-metadata": "^0.2.2",
+    "typeorm": "^0.3.20",
+    "validator": "^13.12.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/node": "^20.12.12",
+    "@types/validator": "^13.11.10",
+    "bcryptjs": "^2.4.3",
+    "nodemon": "^3.1.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  }
+}
