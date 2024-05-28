@@ -7,8 +7,10 @@ const express_1 = __importDefault(require("express"));
 const databaseConnect_1 = require("./config/databaseConnect");
 const Client_1 = require("./router/Client");
 const banker_1 = require("./router/banker");
+const dotenv_1 = __importDefault(require("dotenv"));
 const app = (0, express_1.default)();
 // set up database
+dotenv_1.default.config();
 databaseConnect_1.databaseConnect
     .initialize()
     .then(() => {

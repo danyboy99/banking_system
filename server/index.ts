@@ -2,8 +2,11 @@ import express, { NextFunction, Request, Response } from "express";
 import { databaseConnect } from "./config/databaseConnect";
 import { ClientRoutes } from "./router/Client";
 import { bankersRoutes } from "./router/banker";
+import dotenv from "dotenv";
 const app = express();
 // set up database
+
+dotenv.config();
 
 databaseConnect
   .initialize()
