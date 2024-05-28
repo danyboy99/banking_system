@@ -19,11 +19,23 @@ databaseConnect_1.databaseConnect
 });
 app.use(express_1.default.json());
 app.get("/", (req, res) => {
-    return res.json("working on it");
+    return res.json({
+        msg: "welcome to danyboy99 banking-system-api ",
+        routes: {
+            client_signup: "/api/client/createclient",
+            client_login: "/api/client/login",
+            client_create_transaction_privateroute: "/api/client/createTransaction",
+            client_check_transaction_privateroute: "/api/client/getalltransac",
+        },
+    });
 });
 app.use("/api/client", Client_1.ClientRoutes);
 app.use("/api/banker", banker_1.bankersRoutes);
-const port = process.env.PORT || 7300;
+const port = process.env.PORT;
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send("Something broke!");
+});
 app.listen(port, () => {
     console.log(`app is runging on Port ${port}`);
 });
