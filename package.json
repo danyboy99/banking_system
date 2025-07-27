@@ -1,18 +1,56 @@
 {
-  "name": "banking_system",
+  "name": "banking-system-api",
   "version": "1.0.0",
-  "description": "banking system ",
-  "main": "index.js",
+  "description": "A comprehensive RESTful API for a banking system built with Node.js, TypeScript, Express.js, and PostgreSQL",
+  "main": "build/index.js",
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc --build",
     "start": "node ./build/index.js",
     "start:dev": "nodemon ./server/index.ts",
+    "build": "tsc --build",
+    "build:clean": "rimraf build && npm run build",
+    "dev": "npm run start:dev",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint server/**/*.ts",
+    "lint:fix": "eslint server/**/*.ts --fix",
+    "typecheck": "tsc --noEmit",
     "tsc:version": "tsc -v",
-    "tsc:config": "tsc --showConfig"
+    "tsc:config": "tsc --showConfig",
+    "typeorm": "typeorm-ts-node-commonjs",
+    "migration:generate": "npm run typeorm -- migration:generate",
+    "migration:run": "npm run typeorm -- migration:run",
+    "migration:revert": "npm run typeorm -- migration:revert",
+    "schema:sync": "npm run typeorm -- schema:sync",
+    "schema:drop": "npm run typeorm -- schema:drop"
   },
-  "author": "danyboy99",
+  "keywords": [
+    "banking",
+    "api",
+    "nodejs",
+    "typescript",
+    "express",
+    "postgresql",
+    "jwt",
+    "authentication",
+    "rest-api",
+    "typeorm"
+  ],
+  "author": {
+    "name": "danyboy99",
+    "email": "your.email@example.com"
+  },
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/banking-system-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/banking-system-api/issues"
+  },
+  "homepage": "https://github.com/yourusername/banking-system-api#readme",
   "dependencies": {
     "argon2": "^0.40.1",
     "dotenv": "^16.4.5",
@@ -28,8 +66,11 @@
     "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20.12.12",
     "@types/validator": "^13.11.10",
-    "bcryptjs": "^2.4.3",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.45.0",
     "nodemon": "^3.1.0",
+    "rimraf": "^5.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
   }

@@ -1,3 +1,4 @@
+// Client controller - handles client-related HTTP requests
 import { Request, Response } from "express";
 import Client from "../services/client";
 import Transaction from "../services/transaction";
@@ -6,6 +7,7 @@ import validateLoginInput from "../validate_input/loginInput";
 import validateClientSignup from "../validate_input/clientSignup";
 import validateCreateTransacInput from "../validate_input/createTransac";
 
+// Create a new client account
 export const createClient = async (req: Request, res: Response) => {
   try {
     const {
@@ -18,13 +20,13 @@ export const createClient = async (req: Request, res: Response) => {
       password,
     } = req.body;
 
-    // validate req.body input
+    // Validate request body input
     const { error, isValid } = validateClientSignup(req.body);
-    // check validation
     if (!isValid) {
       return res.status(400).json(error);
     }
 
+    // Create new client
     const client = await Client.createClient(
       firstname,
       lastname,
@@ -34,6 +36,8 @@ export const createClient = async (req: Request, res: Response) => {
       account_manager,
       password
     );
+
+    // Generate JWT token
     const token = Client.signToken(client);
     return res.json({
       status: "success",
@@ -45,16 +49,18 @@ export const createClient = async (req: Request, res: Response) => {
   }
 };
 
+// Client login authentication
 export const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
-    // validate req.body input
+
+    // Validate request body input
     const { error, isValid } = validateLoginInput(req.body);
-    // check validation
     if (!isValid) {
       return res.status(400).json(error);
     }
 
+    // Find client by email
     const foundClient = await Client.findByEmail(email);
 
     if (!foundClient) {
@@ -64,6 +70,7 @@ export const login = async (req: Request, res: Response) => {
       });
     }
 
+    // Verify password using argon2
     const verifyPassword = await argon.verify(foundClient.password, password);
 
     if (!verifyPassword) {
@@ -73,6 +80,7 @@ export const login = async (req: Request, res: Response) => {
       });
     }
 
+    // Return success with JWT token
     return res.json({
       status: "success",
       msg: "login successfuly",
@@ -83,21 +91,25 @@ export const login = async (req: Request, res: Response) => {
   }
 };
 
+// Create a new transaction for authenticated client
 export const createTransaction = async (req: Request, res: Response) => {
   try {
     const { type, amount } = req.body;
 
-    // validate req.body input
+    // Validate request body input
     const { error, isValid } = validateCreateTransacInput(req.body);
-    // check validation
     if (!isValid) {
       return res.status(400).json(error);
     }
 
+    // Get client ID from authenticated user
     const clientId = req.user.id;
     let useAmount = Number(amount);
+
+    // Find current client
     const currentClient = await Client.findOneById(clientId);
     console.log("user:", currentClient);
+
     if (!currentClient) {
       return res.json({
         status: "failed !!",
@@ -105,6 +117,7 @@ export const createTransaction = async (req: Request, res: Response) => {
       });
     }
 
+    // Create the transaction
     const createdTransaction = await Transaction.createTransaction(
       currentClient,
       type,
@@ -121,10 +134,13 @@ export const createTransaction = async (req: Request, res: Response) => {
   }
 };
 
+// Get all transactions for authenticated client
 export const getAllUserTransaction = async (req: Request, res: Response) => {
   try {
     const clientId = req.user.id;
     console.log("user:", req.user.id);
+
+    // Verify client exists
     const currentClient = await Client.findOneById(clientId);
     if (!currentClient) {
       return res.json({
@@ -133,10 +149,12 @@ export const getAllUserTransaction = async (req: Request, res: Response) => {
       });
     }
 
+    // Get client's transactions
     const currentClientTransaction = await Transaction.getUserTransactions(
       clientId
     );
     console.log("user transac:", currentClientTransaction);
+
     return res.json({
       status: "success",
       msg: "transaction found successfuly!!",
@@ -147,6 +165,7 @@ export const getAllUserTransaction = async (req: Request, res: Response) => {
   }
 };
 
+// Get all transactions (admin function)
 export const getAllTransac = async (req: Request, res: Response) => {
   try {
     const allTransac = await Transaction.getAllTransaction();

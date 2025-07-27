@@ -1,3 +1,4 @@
+// Utility function to check if a value is empty
 const isEmpty = (value: any) => {
   return (
     value === undefined ||

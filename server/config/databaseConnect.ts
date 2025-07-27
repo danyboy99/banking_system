@@ -1,9 +1,11 @@
+// Database configuration and connection setup
 import "reflect-metadata";
 import { DataSource } from "typeorm";
 import { Client } from "../entities/client";
 import { Banker } from "../entities/banker";
 import { Transaction } from "../entities/transactions";
 
+// PostgreSQL database connection configuration
 export const databaseConnect = new DataSource({
   type: "postgres",
   host: "localhost",
@@ -11,6 +13,6 @@ export const databaseConnect = new DataSource({
   username: "postgres",
   password: "omotehinse",
   database: "banking-system-main-api",
-  entities: [Client, Banker, Transaction],
-  synchronize: true,
+  entities: [Client, Banker, Transaction], // Entity classes to be managed
+  synchronize: true, // Auto-sync database schema (dev only)
 });
